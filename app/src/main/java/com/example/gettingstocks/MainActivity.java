@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,9 +28,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.news: getSupportFragmentManager().beginTransaction().replace(R.id.FL_main, new NewsFragment()).commit();
-                        return true;
-
-
+                    PortfolioFragment.handler.removeCallbacks(PortfolioFragment.runnable);
+                    return true;
                 }
                 return false;
             }

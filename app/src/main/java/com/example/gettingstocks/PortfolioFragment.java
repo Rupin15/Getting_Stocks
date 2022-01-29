@@ -29,20 +29,20 @@ import java.util.List;
 
 
 public class PortfolioFragment extends Fragment {
-    private static final String URL_DATA="https://sheet.best/api/sheets/ea642c13-0997-4d46-ae92-e8bd387a3179";
-    private RecyclerView recyclerView;
+    private static final String URL_DATA="https://opensheet.elk.sh/1TxhkLIoaF91QxIk2FUF1vw2-MDdM-l6sJasvg9Qnqk4/Equity";
+    private static final String MARKET_URL="https://opensheet.elk.sh/1n_1WWV2sXd9_hwWWzrsI2NF9B_AqCkV6wCVAYjTqzFs/1";
+    private RecyclerView recyclerView,recyclerViewEx;
     private RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter adapterEx;
+    public static Handler handler=new Handler();
+    public static Runnable runnable;
     private List<Stocks> stocks;
+    private List<Exchange> exchangeList;
       public PortfolioFragment() {
-        // Required empty public constructor
     }
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -52,59 +52,127 @@ public class PortfolioFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_portfolio, container, false);
         recyclerView=(RecyclerView)view.findViewById(R.id.RV_stocks_owned);
         stocks=new ArrayList<>();
+        exchangeList=new ArrayList<>();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter=new Adapter(getContext(),stocks);
 
+        recyclerViewEx=view.findViewById(R.id.RV_wallet);
+
+        recyclerViewEx.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));;
+        adapterEx=new ExchangeAdapter(getContext(),exchangeList);
+
+        recyclerView.setAdapter(adapter);
+        recyclerViewEx.setAdapter(adapterEx);
+        loadExchange();
         loadRecyclerView();
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-//        adapter=new Adapter(this,stocks);
-//        recyclerView.setAdapter(adapter);
+
+
         return view;
 
     }
     private  void refresh(int milli){
-        Runnable runnable =new Runnable() {
+
+        runnable =new Runnable() {
             @Override
             public void run() {
                 loadRecyclerView();
             }
         };
-        Handler handler= new Handler();
+
         handler.postDelayed(runnable,milli);
-    }
-    private void loadRecyclerView() {
-
-        RequestQueue requestQueue= Volley.newRequestQueue(getContext());
-        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, URL_DATA, null, new Response.Listener<JSONArray>() {
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onResponse(JSONArray response) {
-                stocks.clear();
-                for(int i=0;i<response.length();i++){
-                    try {
-                        JSONObject stockObject=response.getJSONObject(i);
-                        Stocks stock=new Stocks();
-                        stock.setPrice(stockObject.getString("Prize".toString()));
-                        stock.setSecurityCode(stockObject.getString("Security".toString()));
-                        stock.setIssuerName(stockObject.getString("Issuer".toString()));
-                        Log.e("Check",stockObject.getString("Prize".toString()));
-                        stocks.add(stock);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch(newState){
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        handler.postDelayed(runnable, milli);
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        handler.removeCallbacks(runnable);
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        handler.removeCallbacks(runnable);
+                        break;
                 }
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                adapter=new Adapter(getContext(),stocks);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Error listener", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void loadRecyclerView() {
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL_DATA, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    stocks.clear();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject stockObject = response.getJSONObject(i);
+                            Stocks stock = new Stocks();
+                            stock.setPrice(stockObject.getString("Prize".toString()));
+                            stock.setSecurityCode(stockObject.getString("Security".toString()));
+                            stock.setIssuerName(stockObject.getString("Issuer".toString()));
+                            //Log.e("Check", stockObject.getString("Prize".toString()));
+                            stocks.add(stock);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
-        requestQueue.add(jsonArrayRequest);
-        refresh(2000);
+                    }
+
+                    adapter.notifyDataSetChanged();
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(), "Error listener", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            requestQueue.add(jsonArrayRequest);
+            refresh(2000);
+        } catch (Exception e) {
+          //  Log.e("Exception",e.toString());
+        }
+    }
+
+
+    private void loadExchange() {
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, MARKET_URL, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject exchangeObject = response.getJSONObject(i);
+                            Exchange exchange = new Exchange();
+                            exchange.setName(exchangeObject.getString("name".toString()));
+                            exchange.setPrince(exchangeObject.getString("price".toString()));
+                            Log.e("Check", exchangeObject.getString("price".toString()));
+                            exchangeList.add(exchange);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    adapterEx.notifyDataSetChanged();
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(), "Error listener", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            requestQueue.add(jsonArrayRequest);
+           // refresh(2000);
+        } catch (Exception e) {
+            Log.e("Exception",e.toString());
+        }
+             recyclerViewEx.setAdapter(adapterEx);
+             adapterEx.notifyDataSetChanged();
     }
 }
