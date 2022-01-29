@@ -30,6 +30,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.news: getSupportFragmentManager().beginTransaction().replace(R.id.FL_main, new NewsFragment()).commit();
                     PortfolioFragment.handler.removeCallbacks(PortfolioFragment.runnable);
                     return true;
+
+                    case R.id.prediction: getSupportFragmentManager().beginTransaction().replace(R.id.FL_main, new PredictionsFragment()).commit();
+                        PortfolioFragment.handler.removeCallbacks(PortfolioFragment.runnable);
+                        return true;
+                    case R.id.charts: getSupportFragmentManager().beginTransaction().replace(R.id.FL_main, new ChartsFragment()).commit();
+                        PortfolioFragment.handler.removeCallbacks(PortfolioFragment.runnable);
+                        return true;
                 }
                 return false;
             }
