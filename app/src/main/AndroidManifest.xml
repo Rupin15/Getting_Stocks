@@ -11,12 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GettingStocks">
-
+        <activity
+            android:name=".NewsDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".StockRecycler"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
