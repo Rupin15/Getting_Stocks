@@ -3,8 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/drawable/ic_home.xml" value="0.1" />
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/drawable/itemview_stock3.xml" value="0.1" />
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/drawable/newsfeed_24.xml" value="0.1" />
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/drawable/recyclerview_background.xml" value="0.1" />
         <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/layout/activity_portfolio_acitivity.xml" value="0.1" />
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/layout/activity_stock_recycler.xml" value="0.1" />
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/layout/fragment_portfolio.xml" value="0.264" />
         <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/layout/news_rv_item.xml" value="0.4" />
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/layout/stock_item_rv.xml" value="0.1011764705882353" />
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/layout/stock_layout.xml" value="0.2" />
+        <entry key="..\:/Users/rupin/AndroidStudioProjects/GettingStocks/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

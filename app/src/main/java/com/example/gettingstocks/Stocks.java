@@ -1,32 +1,45 @@
 package com.example.gettingstocks;
 
 public class Stocks {
-    private String ticker, close, open;
+    private String SecurityCode,SecurityID ,Price,IssuerName;
+   public Stocks(){
 
-    public String getTicker() {
-        return ticker;
+   }
+    public Stocks(String securityID, String price, String issuerName) {
+        SecurityID = securityID;
+        Price = price;
+        IssuerName = issuerName;
     }
 
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
+    public String getSecurityCode() {
+        return SecurityCode;
     }
 
-    public String getClose() {
-        return close;
+    public void setSecurityCode(String securityCode) {
+        this.SecurityCode = securityCode;
     }
 
-    public void setClose(String close) {
-        this.close = close;
+    public String getSecurityID() {
+        return SecurityID;
     }
 
-    public String getOpen() {
-        return open;
+    public void setSecurityID(String securityID) {
+        this.SecurityID = securityID;
     }
 
-    public void setOpen(String open) {
-        this.open = open;
+    public String getPrice() {
+        return Price;
     }
 
-    public Stocks() {
+    public void setPrice(String price) {
+        Price = price;
+    }
+
+    public String getIssuerName() {
+        return IssuerName;
+    }
+
+    public void setIssuerName(String issuerName) {
+        IssuerName = issuerName;
     }
 }
